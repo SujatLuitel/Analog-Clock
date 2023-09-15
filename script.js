@@ -1,22 +1,27 @@
-
-setInterval(setClock, 1000)
-
 const hourHand = document.querySelector('[data-hour-hand]')
 const minuteHand = document.querySelector('[data-minute-hand]')
 const secondHand = document.querySelector('[data-second-hand]')
+const dateElement = document.querySelector('[data-date-element]') // New date element
 
 function setClock() {
     const currentDate = new Date();
     const secondsRatio = currentDate.getSeconds() / 60
-    const minutessRatio = (secondsRatio + currentDate.getMinutes()) / 60
-    const hoursRatio = (minutessRatio + currentDate.getHours()) / 12
+    const minutesRatio = (secondsRatio + currentDate.getMinutes()) / 60
+    const hoursRatio = (minutesRatio + currentDate.getHours()) / 12
+    const day = currentDate.toLocaleDateString('en-US', { weekday: 'short' }); // Get day (e.g., "Sun")
+    const date = currentDate.getDate(); // Get date (e.g., 12)
+
     setRotation(secondHand, secondsRatio)
-    setRotation(minuteHand, minutessRatio)
+    setRotation(minuteHand, minutesRatio)
     setRotation(hourHand, hoursRatio)
+    
+    // Update the date element
+    dateElement.textContent = `${day} - ${date}`;
 }
 
 function setRotation(element, rotationRatio) {
     element.style.setProperty('--rotation', rotationRatio * 360)
 }
 
+setInterval(setClock, 1000)
 setClock();
